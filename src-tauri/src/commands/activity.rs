@@ -34,10 +34,7 @@ pub async fn create_activity(
 }
 
 #[tauri::command]
-pub async fn delete_activity(
-    db: State<'_, Db>,
-    id: i64,
-) -> Result<(), CommandError> {
+pub async fn delete_activity(db: State<'_, Db>, id: i64) -> Result<(), CommandError> {
     log::debug!("Deleting activity: {}", id);
     Activity::delete(&db, id).await?;
     log::debug!("Deleted activity '{}' successfully", id);

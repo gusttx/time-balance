@@ -4,6 +4,7 @@
 	import { cn } from "$lib/utils";
 	import Button from "$lib/components/ui/button/button.svelte";
 	import { navigation, Page, pages, type PageInfo } from "$lib/navigation.svelte";
+	import Link from "$lib/components/link.svelte";
 
     const home = pages.get(Page.HOME);
     const activity = pages.get(Page.ACTIVITIES);
@@ -53,7 +54,7 @@
             </div>
         </div>
         <footer class="text-sm text-muted-foreground italic font-dosis text-center mt-4">
-            Made with ❤️ by <a href="https://github.com/gusttx" class="underline">gusttx</a>
+            Made with ❤️ by <Link href="https://github.com/gusttx">gusttx</Link>
         </footer>
     </div>
 </PageTemplate>

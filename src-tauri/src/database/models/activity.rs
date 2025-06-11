@@ -22,9 +22,10 @@ impl Activity {
     }
 
     pub async fn get_all(db: &Db) -> Result<Vec<Activity>> {
-        let activities = sqlx::query_as("SELECT * FROM activities WHERE deleted = 0 ORDER BY id DESC")
-            .fetch_all(&db.pool)
-            .await?;
+        let activities =
+            sqlx::query_as("SELECT * FROM activities WHERE deleted = 0 ORDER BY id DESC")
+                .fetch_all(&db.pool)
+                .await?;
 
         Ok(activities)
     }

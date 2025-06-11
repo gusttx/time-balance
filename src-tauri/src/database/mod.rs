@@ -5,7 +5,10 @@ pub mod models {
 }
 
 use crate::utils::DatabaseError;
-use sqlx::{sqlite::{SqliteConnectOptions, SqliteJournalMode}, SqlitePool};
+use sqlx::{
+    sqlite::{SqliteConnectOptions, SqliteJournalMode},
+    SqlitePool,
+};
 use std::marker::PhantomData;
 use tauri::{AppHandle, Manager};
 
