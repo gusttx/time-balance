@@ -1,20 +1,26 @@
 <script lang="ts">
 	import Titlebar from "$lib/components/titlebar.svelte";
 	import { navigation, Page } from "$lib/navigation.svelte";
-	import { Activity, Home, NotFound } from "$lib/pages";
 	import { Toaster } from "$lib/components/ui/sonner";
+	import Entry from "$lib/pages/entry.svelte";
+	import Activity from "$lib/pages/activity.svelte";
+	import Home from "$lib/pages/home.svelte";
+	import NotFound from "$lib/pages/not-found.svelte";
+	import type { Component } from "svelte";
+
+	const pages = new Map([
+		[Page.HOME, Home],
+		[Page.ACTIVITIES, Activity],
+		[Page.ENTRIES, Entry],
+	]);
+
+	const CurrentPage: Component = $derived(pages.get(navigation.currentPage) ?? NotFound);
 </script>
 
 <div class="h-screen select-none flex flex-col overflow-hidden">
 	<Titlebar />
 
-	{#if navigation.currentPage === Page.HOME}
-		<Home />
-	{:else if navigation.currentPage === Page.ACTIVITIES}
-		<Activity />
-	{:else}
-		<NotFound />
-	{/if}
+	<CurrentPage />
 
 	<Toaster
 		closeButton={true}
@@ -28,5 +34,5 @@
 				success: "text-success!",
 			}
 		}}
-	/>v
+	/>
 </div>

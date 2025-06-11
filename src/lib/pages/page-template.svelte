@@ -18,7 +18,7 @@
     } = $props();
 </script>
 
-<div class="flex flex-col overflow-auto no-scrollbar min-h-full">
+<div class="flex flex-col overflow-auto no-scrollbar grow">
     {#if header}
         <header class={cn(header.class, "p-4")}>
             <h1 class="flex items-center justify-center gap-2 text-xl font-rubik">
@@ -34,9 +34,9 @@
         <Separator />
     {/if}
 
-    <div class="bg-grid relative grow">
+    <div class="bg-grid relative grow flex flex-col">
         <div class="bg-grid-background size-full absolute"></div>
-        <div class="relative z-1 p-4">
+        <div class="relative z-1 p-4 grow">
             {@render children?.()}
         </div>
     </div>

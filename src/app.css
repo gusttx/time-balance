@@ -11,6 +11,12 @@
 
 	--success: #20e920;
 	--activity: #5d2dce;
+	--activity2: #f11469;
+
+	--entry: #1ee0ee;
+	--entry2: #17fa9c;
+
+	--home: #ff00f2;
 
 	--radius: 0.625rem;
 	--background: oklch(1 0 0);
@@ -77,6 +83,10 @@
 
 	--color-success: var(--success);
 	--color-activity: var(--activity);
+	--color-activity2: var(--activity2);
+	--color-entry: var(--entry);
+	--color-entry2: var(--entry2);
+	--color-home: var(--home);
 
 	--radius-sm: calc(var(--radius) - 4px);
 	--radius-md: calc(var(--radius) - 2px);

@@ -3,7 +3,7 @@
 	import * as Drawer from "$lib/components/ui/drawer";
 	import Input from "$lib/components/ui/input/input.svelte";
 	import Separator from "$lib/components/ui/separator/separator.svelte";
-	import { Plus } from "@lucide/svelte";
+	import { CircleFadingPlus } from "@lucide/svelte";
 	import Slider from "./ui/slider/slider.svelte";
 	import { createActivity } from "$lib/commands/activity";
 	import { activities } from "$lib/activities.svelte";
@@ -50,7 +50,7 @@
 
 <Drawer.Root bind:open onClose={clear}>
 	<Drawer.Trigger class={buttonVariants({ variant: "outline" })}>
-		<Plus class="stroke-green-400" strokeWidth={3} /> New activity
+		<CircleFadingPlus class="stroke-green-400" strokeWidth={3} /> New activity
 	</Drawer.Trigger>
 	<Drawer.Content>
 		<Drawer.Header>

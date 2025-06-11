@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { FileQuestion } from "@lucide/svelte";
-    import Page from "./page.svelte";
+    import PageTemplate from "./page-template.svelte";
 </script>
 
-<Page
+<PageTemplate
     header={{
         icon: FileQuestion,
         title: "Not Found",
@@ -12,4 +12,4 @@
     }}
 >
     <!-- TODO Maybe an easteregg? -->
-</Page>
+</PageTemplate>

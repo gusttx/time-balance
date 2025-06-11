@@ -1,36 +1,10 @@
 <script lang="ts">
-	import { X, Minus, Square, Dumbbell, House, FileQuestion, type IconProps, PinOff, Pin } from "@lucide/svelte";
+	import { X, Minus, Square, PinOff, Pin } from "@lucide/svelte";
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu/";
 	import { Button, buttonVariants } from "$lib/components/ui/button";
 	import { getCurrentWindow } from "@tauri-apps/api/window";
-	import { navigation, Page } from "$lib/navigation.svelte";
+	import { navigation, Page, pages } from "$lib/navigation.svelte";
 	import { cn, isDesktop } from "$lib/utils";
-	import type { Component } from "svelte";
-
-	interface PageInfo {
-		page: Page;
-		name: string;
-		icon: Component<IconProps>;
-	}
-
-	const notFoundPage: PageInfo = {
-		page: Page.NOT_FOUND,
-		name: "Unknown",
-		icon: FileQuestion
-	};
-
-	const pages: PageInfo[] = [
-		{
-			page: Page.HOME,
-			name: "Home",
-			icon: House
-		},
-		{
-			page: Page.ACTIVITIES,
-			name: "Activities",
-			icon: Dumbbell
-		}
-	];
 
 	const window = getCurrentWindow();
 
@@ -39,9 +13,8 @@
 
 	window.isAlwaysOnTop().then((value) => (alwaysOnTop = value));
 
-	const currentPage = $derived(
-		pages.find(({ page }) => page === navigation.currentPage) ?? notFoundPage
-	);
+	const currentPage = $derived(pages.get(navigation.currentPage));
+	const PinIcon = $derived(alwaysOnTop ? PinOff : Pin);
 
 	function navigate(page: Page) {
 		isOpen = false;
@@ -67,7 +40,7 @@
 			{currentPage.name}
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content align="start">
-			{#each pages as page}
+			{#each pages.all() as page}
 				<DropdownMenu.Item
 					class="cursor-pointer"
 					disabled={page.page === currentPage.page}
@@ -80,45 +53,24 @@
 		</DropdownMenu.Content>
 	</DropdownMenu.Root>
 	{#if isDesktop}
-		<ul class="absolute right-1 flex gap-1">
-			<li>
-				<Button
-					variant="ghost"
-					size="icon"
-					onclick={toggleAlwaysOnTop}
-				>
-					{#if alwaysOnTop}
-						<PinOff />
-					{:else}
-						<Pin />
-					{/if}
-				</Button>
-			</li>
-			<li>
-				<Button
-					variant="ghost"
-					size="icon"
-					class="cursor-default"
-					onclick={() => window.minimize()}
-				>
-					<Minus />
-				</Button>
-			</li>
-			<li>
-				<Button variant="ghost" size="icon" disabled>
-					<Square />
-				</Button>
-			</li>
-			<li>
-				<Button
-					variant="ghost"
-					size="icon"
-					class="hover:text-foreground cursor-default hover:bg-red-600 dark:hover:bg-red-600"
-					onclick={() => window.close()}
-				>
-					<X />
-				</Button>
-			</li>
-		</ul>
+		<div class="absolute right-1 flex gap-1">
+			<Button variant="ghost" size="icon" onclick={toggleAlwaysOnTop}>
+				<PinIcon />
+			</Button>
+			<Button variant="ghost" size="icon" class="cursor-default" onclick={() => window.minimize()}>
+				<Minus />
+			</Button>
+			<Button variant="ghost" size="icon" disabled>
+				<Square />
+			</Button>
+			<Button
+				variant="ghost"
+				size="icon"
+				class="hover:text-foreground cursor-default hover:bg-red-600 dark:hover:bg-red-600"
+				onclick={() => window.close()}
+			>
+				<X />
+			</Button>
+		</div>
 	{/if}
 </nav>
