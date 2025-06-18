@@ -1,3 +1,4 @@
+import { type } from '@tauri-apps/plugin-os';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -14,7 +15,7 @@ export type WithElementRef<T, U extends HTMLElement = HTMLElement> = T & {
 	ref?: U | null;
 };
 
-export const isDesktop = '__TAURI_INTERNALS__' in window && !(navigator.maxTouchPoints > 0);
+export const isDesktop = ['linux', 'windows', 'macos'].includes(type());
 
 export type Result<T, E> = { ok: true; value: T } | { ok: false; error: E };
 export function ok<T, E>(value: T): Result<T, E> {
