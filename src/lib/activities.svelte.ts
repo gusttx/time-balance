@@ -1,85 +1,80 @@
 import { toast } from "svelte-sonner";
 import { getAllActivities, type Activity } from "./commands/activity";
-
-export enum ActivitiesStatus {
-    UNINITIALIZED,
-    LOADING,
-    LOADED,
-    ERROR,
-}
+import { StateStatus } from "./utils";
 
 class ActivitiesState {
-    #activities = $state<Activity[]>([]);
-    #status = $state(ActivitiesStatus.UNINITIALIZED);
+	#activities = $state<Activity[]>([]);
+	#status = $state(StateStatus.UNINITIALIZED);
+	length = $derived(this.#activities.length);
 
-    constructor() {
-        this.load();
-    }
+	constructor() {
+		this.load();
+	}
 
-    load() {
-        if (this.#status === ActivitiesStatus.LOADING) {
-            return;
-        }
+	load() {
+		if (this.#status === StateStatus.LOADING) {
+			return;
+		}
 
-        this.#status = ActivitiesStatus.LOADING;
-        
-        getAllActivities().then((result) => {
-            if (!result.ok) {
-                const { error, message } = result.error;
-                toast.error(`${error} error`, {
-                    description: message,
-                    action: {
-                        label: "Try again",
-                        onClick: () => this.load()
-                    }
-                });
+		this.#status = StateStatus.LOADING;
 
-                this.#status = ActivitiesStatus.ERROR;
-                return;
-            }
+		getAllActivities().then((result) => {
+			if (!result.ok) {
+				const { error, message } = result.error;
+				toast.error(`${error} error`, {
+					description: message,
+					action: {
+						label: "Try again",
+						onClick: () => this.load()
+					}
+				});
 
-            this.#activities = result.value;
-            this.#status = ActivitiesStatus.LOADED;
-        });
-    }
+				this.#status = StateStatus.ERROR;
+				return;
+			}
 
-    add(activity: Activity) {
-        this.#activities.unshift(activity);
-    }
+			this.#activities = result.value;
+			this.#status = StateStatus.LOADED;
+		});
+	}
 
-    remove(id: number) {
-        const index = this.#activities.findIndex((a) => a.id === id);
-        if (~index) {
-            this.#activities.splice(index, 1);
-        }
-    }
+	add(activity: Activity) {
+		this.#activities.unshift(activity);
+	}
 
-    edit(activity: Activity) {
-        const index = this.#activities.findIndex((a) => a.id === activity.id);
-        if (~index) {
-            this.#activities[index] = activity;
-        }
-    }
+	remove(id: number) {
+		const index = this.#activities.findIndex((a) => a.id === id);
+		if (~index) {
+			this.#activities.splice(index, 1);
+		}
+	}
 
-    get length(): number {
-        return this.#activities.length;
-    }
+	edit(activity: Activity) {
+		const index = this.#activities.findIndex((a) => a.id === activity.id);
+		if (~index) {
+			this.#activities[index] = activity;
+		}
+	}
 
-    get entries(): Activity[] {
-        return this.#activities;
-    }
+	get(id: number): Activity | undefined {
+		return this.#activities.find((a) => a.id === id);
+	}
 
-    get loaded(): boolean {
-        return this.#status === ActivitiesStatus.LOADED;
-    }
+	get entries(): Activity[] {
+		return this.#activities;
+	}
 
-    get loading(): boolean {
-        return this.#status === ActivitiesStatus.LOADING || this.#status === ActivitiesStatus.UNINITIALIZED;
-    }
+	get loaded(): boolean {
+		return this.#status === StateStatus.LOADED;
+	}
 
-    get error(): boolean {
-        return this.#status === ActivitiesStatus.ERROR;
-    }
+	get loading(): boolean {
+		return this.#status === StateStatus.LOADING || this.#status === StateStatus.UNINITIALIZED;
+	}
+
+	get error(): boolean {
+		return this.#status === StateStatus.ERROR;
+	}
 }
 
 export const activities = new ActivitiesState();

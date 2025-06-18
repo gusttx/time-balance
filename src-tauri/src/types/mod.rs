@@ -1,13 +1,18 @@
 mod activity;
+mod entry;
 
 pub use activity::ActivityError;
+pub use entry::EntryError;
 use serde::Serialize;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum CommandError {
     #[error(transparent)]
-    Activity(#[from] activity::ActivityError),
+    Activity(#[from] ActivityError),
+
+    #[error(transparent)]
+    Entry(#[from] EntryError),
 
     #[error(transparent)]
     Sqlx(#[from] sqlx::Error),
@@ -21,7 +26,9 @@ pub enum CommandError {
 #[serde(tag = "error", content = "message")]
 enum CommandErrorName {
     Activity(String),
+    Entry(String),
     Sqlx(String),
+
     #[serde(rename = "Not implemented")]
     NotImplemented(String),
 }
@@ -35,6 +42,7 @@ impl Serialize for CommandError {
         let name = match self {
             CommandError::Activity(_) => CommandErrorName::Activity(message),
             CommandError::Sqlx(_) => CommandErrorName::Sqlx(message),
+            CommandError::Entry(_) => CommandErrorName::Entry(message),
             CommandError::NotImplemented => CommandErrorName::NotImplemented(message),
         };
 

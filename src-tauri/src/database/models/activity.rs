@@ -21,43 +21,43 @@ impl Activity {
         }
     }
 
-    pub async fn get_all(db: &Db) -> Result<Vec<Activity>> {
-        let activities =
-            sqlx::query_as("SELECT * FROM activities WHERE deleted = 0 ORDER BY id DESC")
-                .fetch_all(&db.pool)
-                .await?;
-
-        Ok(activities)
+    pub async fn get(db: &Db, id: i64) -> Result<Option<Self>> {
+        sqlx::query_as("SELECT * FROM activities WHERE id = ?")
+            .bind(id)
+            .fetch_optional(&db.pool)
+            .await
     }
 
-    pub async fn create(db: &Db, name: String, points_per_second: i8) -> Result<Activity> {
-        let result = sqlx::query("INSERT INTO activities (name, points_per_second) VALUES (?, ?)")
+    pub async fn get_all(db: &Db) -> Result<Vec<Self>> {
+        sqlx::query_as("SELECT * FROM activities WHERE deleted = 0 ORDER BY id DESC")
+            .fetch_all(&db.pool)
+            .await
+    }
+
+    pub async fn create(db: &Db, name: String, points_per_second: i8) -> Result<Self> {
+        sqlx::query("INSERT INTO activities (name, points_per_second) VALUES (?, ?)")
             .bind(&name)
             .bind(points_per_second)
             .execute(&db.pool)
-            .await?;
-
-        let id = result.last_insert_rowid();
-        Ok(Activity::new(id, name, points_per_second))
+            .await
+            .map(|r| Self::new(r.last_insert_rowid(), name, points_per_second))
     }
 
     pub async fn delete(db: &Db, id: i64) -> Result<()> {
         sqlx::query("UPDATE activities SET deleted = 1 WHERE id = ?")
             .bind(id)
             .execute(&db.pool)
-            .await?;
-
-        Ok(())
+            .await
+            .map(|_| ())
     }
 
-    pub async fn edit(db: &Db, id: i64, name: String, points_per_second: i8) -> Result<Activity> {
+    pub async fn edit(db: &Db, id: i64, name: String, points_per_second: i8) -> Result<Self> {
         sqlx::query("UPDATE activities SET name = ?, points_per_second = ? WHERE id = ?")
             .bind(&name)
             .bind(points_per_second)
             .bind(id)
             .execute(&db.pool)
-            .await?;
-
-        Ok(Activity::new(id, name, points_per_second))
+            .await
+            .map(|_| Self::new(id, name, points_per_second))
     }
 }

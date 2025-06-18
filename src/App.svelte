@@ -7,6 +7,7 @@
 	import Home from "$lib/pages/home.svelte";
 	import NotFound from "$lib/pages/not-found.svelte";
 	import type { Component } from "svelte";
+	import { TooltipProvider } from "$lib/components/ui/tooltip";
 
 	const pages = new Map([
 		[Page.HOME, Home],
@@ -18,21 +19,24 @@
 </script>
 
 <div class="h-screen select-none flex flex-col overflow-hidden">
-	<Titlebar />
-
-	<CurrentPage />
-
-	<Toaster
-		closeButton={true}
-		toastOptions={{
-			duration: 2500,
-			classes: {
-				title: "text-base font-bold text-popover-foreground!",
-				description: "text-muted-foreground!",
-				toast: "gap-3!",
-				error: "text-destructive!",
-				success: "text-success!",
-			}
-		}}
-	/>
+	<TooltipProvider>
+		<Titlebar />
+	
+		<CurrentPage />
+	
+		<Toaster
+			closeButton={true}
+			toastOptions={{
+				duration: 2500,
+				classes: {
+					title: "text-base font-bold text-popover-foreground!",
+					description: "text-muted-foreground!",
+					toast: "gap-3!",
+					error: "text-destructive!",
+					success: "text-success!",
+					info: "text-blue-500!"
+				}
+			}}
+		/>
+	</TooltipProvider>
 </div>

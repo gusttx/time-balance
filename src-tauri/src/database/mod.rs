@@ -1,7 +1,9 @@
 pub mod models {
     mod activity;
+    mod entry;
 
     pub use activity::Activity;
+    pub use entry::Entry;
 }
 
 use crate::utils::DatabaseError;

@@ -3,7 +3,7 @@ mod database;
 mod types;
 mod utils;
 
-use commands::activity;
+use commands::{activity, entry};
 use log::LevelFilter;
 use tauri::Manager;
 use tauri_plugin_log::{Target, TargetKind};
@@ -52,7 +52,10 @@ pub fn run() {
             activity::get_all_activities,
             activity::create_activity,
             activity::delete_activity,
-            activity::edit_activity
+            activity::edit_activity,
+            entry::create_entry,
+            entry::get_entry_page,
+            entry::delete_entry
         ])
         .run(tauri::generate_context!())
         .expect("Error while running tauri application");

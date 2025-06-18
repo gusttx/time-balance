@@ -4,6 +4,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+	--breakpoint-sm: 510px;
+}
+
 :root {
 	--font-inter: 'Inter', sans-serif;
 	--font-rubik: 'Rubik', sans-serif;
@@ -14,7 +18,7 @@
 	--activity2: #f11469;
 
 	--entry: #1ee0ee;
-	--entry2: #17fa9c;
+	--entry2: #156fd6;
 
 	--home: #ff00f2;
 

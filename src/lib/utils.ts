@@ -23,3 +23,10 @@ export function ok<T, E>(value: T): Result<T, E> {
 export function err<T, E>(error: E): Result<T, E> {
 	return { ok: false, error };
 }
+
+export enum StateStatus {
+	UNINITIALIZED,
+	LOADING,
+	LOADED,
+	ERROR,
+}

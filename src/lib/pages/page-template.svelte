@@ -7,6 +7,7 @@
     let {
         children,
         header,
+        class: className
     }: {
         header?: {
             icon: Component<IconProps>,
@@ -14,7 +15,8 @@
             description: string,
             class?: string
         }
-        children?: Snippet
+        children?: Snippet,
+        class?: string
     } = $props();
 </script>
 
@@ -36,7 +38,7 @@
 
     <div class="bg-grid relative grow flex flex-col">
         <div class="bg-grid-background size-full absolute"></div>
-        <div class="relative z-1 p-4 grow">
+        <div class={cn("relative z-1 p-4 grow", className)}>
             {@render children?.()}
         </div>
     </div>

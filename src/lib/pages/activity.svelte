@@ -12,7 +12,7 @@
 		icon: page.icon,
 		title: page.name,
 		description: "Here you can create and manage your activities.",
-		class: "bg-linear-[155deg] from-activity/30 to-activity/2.5"
+		class: "bg-linear-[135deg] from-activity/40 to-activity2/25"
 	}}
 >
 	<div class="flex justify-end">

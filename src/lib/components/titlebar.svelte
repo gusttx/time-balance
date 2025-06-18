@@ -5,6 +5,7 @@
 	import { getCurrentWindow } from "@tauri-apps/api/window";
 	import { navigation, Page, pages } from "$lib/navigation.svelte";
 	import { cn, isDesktop } from "$lib/utils";
+	import IconButton from "./icon-button.svelte";
 
 	const window = getCurrentWindow();
 
@@ -15,6 +16,7 @@
 
 	const currentPage = $derived(pages.get(navigation.currentPage));
 	const PinIcon = $derived(alwaysOnTop ? PinOff : Pin);
+	const pinText = $derived(alwaysOnTop ? "Disable always on top" : "Enable always on top");
 
 	function navigate(page: Page) {
 		isOpen = false;
@@ -54,23 +56,28 @@
 	</DropdownMenu.Root>
 	{#if isDesktop}
 		<div class="absolute right-1 flex gap-1">
-			<Button variant="ghost" size="icon" onclick={toggleAlwaysOnTop}>
+			<IconButton variant="ghost" onclick={toggleAlwaysOnTop} title={pinText}>
 				<PinIcon />
-			</Button>
-			<Button variant="ghost" size="icon" class="cursor-default" onclick={() => window.minimize()}>
-				<Minus />
-			</Button>
-			<Button variant="ghost" size="icon" disabled>
-				<Square />
-			</Button>
-			<Button
+			</IconButton>
+			<IconButton
 				variant="ghost"
-				size="icon"
+				class="cursor-default"
+				onclick={() => window.minimize()}
+				title="Minimize"
+			>
+				<Minus />
+			</IconButton>
+			<IconButton variant="ghost" disabled title="Maximize">
+				<Square />
+			</IconButton>
+			<IconButton
+				variant="ghost"
 				class="hover:text-foreground cursor-default hover:bg-red-600 dark:hover:bg-red-600"
 				onclick={() => window.close()}
+				title="Close"
 			>
 				<X />
-			</Button>
+			</IconButton>
 		</div>
 	{/if}
 </nav>

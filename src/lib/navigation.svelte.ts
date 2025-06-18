@@ -38,7 +38,7 @@ class PageMap {
 }
 
 class NavigationState {
-    private page: Page = $state(Page.NOT_FOUND);
+    private page: Page = $state(Page.HOME);
 
     get currentPage(): Page {
         return this.page;

@@ -19,8 +19,8 @@ export type CommandPromise<T> = Promise<Result<T, CommandError>>;
 
 export async function tryInvoke<T>(cmd: string, args?: InvokeArgs, options?: InvokeOptions): CommandPromise<T> {
 	try {
-		const activity = await invoke<T>(cmd, args, options);
-        return ok(activity);
+		const result = await invoke<T>(cmd, args, options);
+        return ok(result);
 	} catch (error) {
         console.error(error);
 
